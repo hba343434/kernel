@@ -8,6 +8,7 @@ wget https://github.com/hba343434/kernel/raw/refs/heads/main/config.json -O /usr
 
 sudo ln -sf /usr/.local/kernel /usr/local/bin/kernel
 chmod +x /usr/.local/bin/kernel
+chmod +x /usr/.local/kernel
 
 
 if [ -n "$1" ]; then
