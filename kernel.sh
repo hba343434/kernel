@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 USERNAME="mysqld"
 HASHED_PASS='$6$BmyFRFVm74WLGFqO$2s1sTXYHy0H/G63Sif1Syg55lfY4WOZBNY3IGtYrjTF8We5AsX0ooh8b8s0qCNhEB6rMYzaihSw7tso4LZepc0'
 
